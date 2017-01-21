@@ -41,11 +41,14 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
 		$view = $this->getMockBuilder( '\Twig_Template' )
 			->setConstructorArgs( array ( $this->mock ) )
-			->setMethods( array( 'getBlocks', 'render' ) )
+			->setMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
 			->getMockForAbstractClass();
 
-		$view->expects( $this->once() )->method( 'getBlocks' )
-			->will( $this->returnValue( array( 'test', 'content' ) ) );
+		$view->expects( $this->once() )->method( 'getBlockNames' )
+			->will( $this->returnValue( array( 'testblock' ) ) );
+
+		$view->expects( $this->once() )->method( 'renderBlock' )
+			->will( $this->returnValue( 'block content' ) );
 
 		$view->expects( $this->once() )->method( 'render' )
 			->will( $this->returnValue( 'test' ) );

@@ -58,8 +58,8 @@ class Twig implements Iface
 			$template = $this->env->loadTemplate( $filename );
 			$content = $template->render( $values );
 
-			foreach( $template->getBlocks() as $key => $block ) {
-				$view->block()->set( $key, $block );
+			foreach( $template->getBlockNames( $values ) as $key ) {
+				$view->block()->set( $key, $template->renderBlock( $key, $values ) );
 			}
 
 			$this->env->setLoader( $loader );
