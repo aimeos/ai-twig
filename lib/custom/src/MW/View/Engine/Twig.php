@@ -45,25 +45,31 @@ class Twig implements Iface
 	public function render( \Aimeos\MW\View\Iface $view, $filename, array $values )
 	{
 		$loader = $this->env->getLoader();
-		$name = sprintf('__string_template__%s', hash('sha256', $filename, false ) );
-		$chain = new \Twig_Loader_Chain( array( new \Twig_Loader_Array( array( $name => $filename ) ), $loader ) );
 
-		$this->env->setLoader( $chain );
+		if( ( $content = @file_get_contents( $filename ) ) === false ) {
+			throw new \Aimeos\MW\View\Exception( sprintf( 'Template "%1$s" not found', $filename ) );
+		}
+
+		$custom = new \Twig_Loader_Array( array( $filename => $content ) );
+		$this->env->setLoader( new \Twig_Loader_Chain( array( $custom, $loader ) ) );
 
 		try
 		{
-			$template = $this->env->loadTemplate( $name );
+			$template = $this->env->loadTemplate( $filename );
 			$content = $template->render( $values );
 
-			foreach( $template->getBlocks() as $name => $block ) {
-				$view->block()->set( $name, $block );
+			foreach( $template->getBlocks() as $key => $block ) {
+				$view->block()->set( $key, $block );
 			}
+
+			$this->env->setLoader( $loader );
 
 			return $content;
 		}
-		finally
+		catch( \Exception $e )
 		{
 			$this->env->setLoader( $loader );
+			throw $e;
 		}
 	}
 }

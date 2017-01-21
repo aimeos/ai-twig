@@ -62,7 +62,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( $view) );
 
 
-		$result = $this->object->render( $v, 'filepath', array( 'key' => 'value' ) );
+		$result = $this->object->render( $v, __FILE__, array( 'key' => 'value' ) );
 		$this->assertEquals( 'test', $result );
 	}
 }
