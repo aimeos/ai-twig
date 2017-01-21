@@ -1,0 +1,14 @@
+{
+	"name": "aimeos/ai-twig",
+	"description": "Aimeos ai-twig extension",
+	"keywords": ["aimeos", "extension"],
+	"type": "aimeos-extension",
+	"license": "LGPL-3.0",
+	"prefer-stable": true,
+	"minimum-stability": "dev",
+	"require": {
+		"php": ">=5.3.3",
+		"composer/installers": "^1.0",
+		"twig/twig": "~1.9||~2.0"
+	}
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="." tests="1" assertions="3" failures="0" errors="0" time="0.032651">
+    <testsuite name="Aimeos\MW\View\Engine\TwigTest" file="/home/nose/Aimeos/src/core/aimeos-extensions/ai-twig/lib/custom/tests/MW/View/Engine/TwigTest.php" tests="1" assertions="3" failures="0" errors="0" time="0.032651">
+      <testcase name="testRender" class="Aimeos\MW\View\Engine\TwigTest" file="/home/nose/Aimeos/src/core/aimeos-extensions/ai-twig/lib/custom/tests/MW/View/Engine/TwigTest.php" line="38" assertions="3" time="0.032651"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
