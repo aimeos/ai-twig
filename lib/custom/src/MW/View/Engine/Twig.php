@@ -59,7 +59,7 @@ class Twig implements Iface
 			$content = $template->render( $values );
 
 			foreach( $template->getBlockNames( $values ) as $key ) {
-				$view->block()->set( $key, $template->renderBlock( $key, $values ) );
+				$view->block()->set( str_replace( '_', '/', $key ), $template->renderBlock( $key, $values ) );
 			}
 
 			$this->env->setLoader( $loader );
