@@ -45,25 +45,25 @@ class Twig implements Iface
 	public function render( \Aimeos\MW\View\Iface $view, $filename, array $values )
 	{
 		$loader = $this->env->getLoader();
-        $name = sprintf('__string_template__%s', hash('sha256', $filename, false ) );
-        $chain = new \Twig_Loader_Chain( array( new \Twig_Loader_Array( array( $name => $filename ) ), $loader ) );
+		$name = sprintf('__string_template__%s', hash('sha256', $filename, false ) );
+		$chain = new \Twig_Loader_Chain( array( new \Twig_Loader_Array( array( $name => $filename ) ), $loader ) );
 
-        $this->env->setLoader( $chain );
+		$this->env->setLoader( $chain );
 
-        try
-        {
-            $template = $this->env->loadTemplate( $name );
-            $content = $template->render( $values );
+		try
+		{
+			$template = $this->env->loadTemplate( $name );
+			$content = $template->render( $values );
 
-            foreach( $template->getBlocks() as $name => $block ) {
-            	$view->block()->set( $name, $block );
-            }
+			foreach( $template->getBlocks() as $name => $block ) {
+				$view->block()->set( $name, $block );
+			}
 
-            return $content;
-        }
-        finally
-        {
-            $this->env->setLoader( $loader );
-        }
+			return $content;
+		}
+		finally
+		{
+			$this->env->setLoader( $loader );
+		}
 	}
 }
