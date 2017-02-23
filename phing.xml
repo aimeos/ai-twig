@@ -27,7 +27,7 @@
 	</target>
 
 	<target name="build" description="Builds package for deployment">
-		<phing target="build" haltonfailure="true" dir="lib/custom" />
+		<echo msg="Nothing to build" />
     </target>
 
 	<target name="release" description="Creates new release" depends="build">
