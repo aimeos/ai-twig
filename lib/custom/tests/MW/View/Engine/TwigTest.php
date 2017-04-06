@@ -37,7 +37,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
 	public function testRender()
 	{
-		$v = new \Aimeos\MW\View\Standard( array() );
+		$v = new \Aimeos\MW\View\Standard( [] );
 
 		$view = $this->getMockBuilder( '\Twig_Template' )
 			->setConstructorArgs( array ( $this->mock ) )
