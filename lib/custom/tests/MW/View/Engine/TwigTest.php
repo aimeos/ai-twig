@@ -8,7 +8,7 @@
 namespace Aimeos\MW\View\Engine;
 
 
-class TwigTest extends \PHPUnit_Framework_TestCase
+class TwigTest extends \PHPUnit\Framework\TestCase
 {
 	private $object;
 	private $mock;
