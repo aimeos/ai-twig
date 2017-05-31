@@ -35,3 +35,5 @@ matrix:
       env: "TWIG_VERSION=~2.0"
     - php: hhvm
       env: "TWIG_VERSION=~2.0"
+  allow_failures:
+    - php: hhvm
