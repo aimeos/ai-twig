@@ -23,7 +23,7 @@
 	</target>
 
 	<target name="i18n" description="Creates all translation files">
-		<phing target="i18n" haltonfailure="true" dir="lib/custom" />
+		<echo msg="Nothing to translate" />
 	</target>
 
 	<target name="build" description="Builds package for deployment">
