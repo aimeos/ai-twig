@@ -3,7 +3,7 @@
 	"description": "Twig template engine adapter for Aimeos e-commerce components",
 	"keywords": ["twig", "templates", "aimeos", "extension"],
 	"type": "aimeos-extension",
-	"license": "LGPL-3.0",
+	"license": "LGPL-3.0-or-later",
 	"support": {
 		"source": "https://github.com/aimeos/ai-twig",
 		"issues": "https://github.com/aimeos/ai-twig/issues",
