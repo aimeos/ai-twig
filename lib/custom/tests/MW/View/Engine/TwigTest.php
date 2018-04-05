@@ -39,7 +39,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 	{
 		$v = new \Aimeos\MW\View\Standard( [] );
 
-		$this->mock->expects( $this->once() )->method( 'getExtensions' )
+		$this->mock->expects( $this->any() )->method( 'getExtensions' )
 			->will( $this->returnValue( array( [] ) ) );
 
 
