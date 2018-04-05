@@ -21,7 +21,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 		}
 
 		$this->mock = $this->getMockBuilder( '\Twig_Environment' )
-			->setMethods( array( 'getLoader', 'loadTemplate' ) )
+			->setMethods( array( 'getExtensions', 'getLoader', 'loadTemplate' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,6 +38,10 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 	public function testRender()
 	{
 		$v = new \Aimeos\MW\View\Standard( [] );
+
+		$this->mock->expects( $this->once() )->method( 'getExtensions' )
+			->will( $this->returnValue( array( [] ) ) );
+
 
 		$view = $this->getMockBuilder( '\Twig_Template' )
 			->setConstructorArgs( array ( $this->mock ) )
