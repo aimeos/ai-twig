@@ -85,7 +85,7 @@ class TestHelper
 
 		$ctx->setLocale( $localeItem );
 
-		$ctx->setEditor( 'ai-twig:unittest' );
+		$ctx->setEditor( 'ai-twig:lib/custom' );
 
 		return $ctx;
 	}
