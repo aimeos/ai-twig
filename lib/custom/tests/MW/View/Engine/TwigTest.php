@@ -14,7 +14,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 	private $mock;
 
 
-	protected function setUp()
+	protected function setUp() : void
 	{
 		if( !class_exists( '\Twig_Environment' ) ) {
 			$this->markTestSkipped( 'Twig_Environment is not available' );
@@ -29,7 +29,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 	}
 
 
-	protected function tearDown()
+	protected function tearDown() : void
 	{
 		unset( $this->object, $this->mock );
 	}
