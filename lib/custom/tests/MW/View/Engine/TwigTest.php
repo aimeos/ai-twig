@@ -44,7 +44,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 
 
 		$view = $this->getMockBuilder( '\Twig_Template' )
-			->setConstructorArgs( array ( $this->mock ) )
+			->setConstructorArgs( array( $this->mock ) )
 			->setMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
 			->getMockForAbstractClass();
 
@@ -63,10 +63,10 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 			->getMockForAbstractClass();
 
 		$this->mock->expects( $this->once() )->method( 'getLoader' )
-			->will( $this->returnValue( $loader) );
+			->will( $this->returnValue( $loader ) );
 
 		$this->mock->expects( $this->once() )->method( 'loadTemplate' )
-			->will( $this->returnValue( $view) );
+			->will( $this->returnValue( $view ) );
 
 
 		$result = $this->object->render( $v, __FILE__, array( 'key' => 'value' ) );
