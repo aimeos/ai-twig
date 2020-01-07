@@ -25,9 +25,9 @@ class Twig implements Iface
 	/**
 	 * Initializes the view object
 	 *
-	 * @param \Twig_Environment $env Twig environment object
+	 * @param \Twig\Environment $env Twig environment object
 	 */
-	public function __construct( \Twig_Environment $env )
+	public function __construct( \Twig\Environment $env )
 	{
 		$this->env = $env;
 	}
@@ -50,12 +50,12 @@ class Twig implements Iface
 			throw new \Aimeos\MW\View\Exception( sprintf( 'Template "%1$s" not found', $filename ) );
 		}
 
-		$custom = new \Twig_Loader_Array( array( $filename => $content ) );
-		$this->env->setLoader( new \Twig_Loader_Chain( array( $custom, $loader ) ) );
+		$custom = new \Twig\Loader\ArrayLoader( array( $filename => $content ) );
+		$this->env->setLoader( new \Twig\Loader\ChainLoader( array( $custom, $loader ) ) );
 
 		try
 		{
-			$template = $this->env->loadTemplate( $filename );
+			$template = $this->env->load( $filename );
 			$content = $template->render( $values );
 
 			foreach( $template->getBlockNames( $values ) as $key ) {
