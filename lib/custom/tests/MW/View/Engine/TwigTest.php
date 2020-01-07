@@ -16,12 +16,12 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 
 	protected function setUp() : void
 	{
-		if( !class_exists( '\Twig\Environment' ) ) {
-			$this->markTestSkipped( 'Twig\Environment is not available' );
+		if( !class_exists( '\Twig_Environment' ) ) {
+			$this->markTestSkipped( 'Twig_Environment is not available' );
 		}
 
-		$this->mock = $this->getMockBuilder( '\Twig\Environment' )
-			->setMethods( array( 'getExtensions', 'getLoader', 'load', 'mergeGlobals' ) )
+		$this->mock = $this->getMockBuilder( '\Twig_Environment' )
+			->setMethods( array( 'getExtensions', 'getLoader', 'loadTemplate' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,33 +42,31 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 		$this->mock->expects( $this->any() )->method( 'getExtensions' )
 			->will( $this->returnValue( array( [] ) ) );
 
-		$this->mock->expects( $this->any() )->method( 'mergeGlobals' )
-			->will( $this->returnArgument( 0 ) );
 
-
-		$view = $this->getMockBuilder( '\Twig\Template' )
+		$view = $this->getMockBuilder( '\Twig_Template' )
 			->setConstructorArgs( array ( $this->mock ) )
-			->setMethods( array( 'displayBlock', 'getBlockNames', 'render' ) )
+			->setMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
 			->getMockForAbstractClass();
-
-		$view->expects( $this->once() )->method( 'displayBlock' );
 
 		$view->expects( $this->once() )->method( 'getBlockNames' )
 			->will( $this->returnValue( array( 'testblock' ) ) );
+
+		$view->expects( $this->once() )->method( 'renderBlock' )
+			->will( $this->returnValue( 'block content' ) );
 
 		$view->expects( $this->once() )->method( 'render' )
 			->will( $this->returnValue( 'test' ) );
 
 
-		$loader = $this->getMockBuilder( '\Twig\Loader\LoaderInterface' )
+		$loader = $this->getMockBuilder( '\Twig_LoaderInterface' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->mock->expects( $this->once() )->method( 'getLoader' )
 			->will( $this->returnValue( $loader) );
 
-		$this->mock->expects( $this->once() )->method( 'load' )
-			->will( $this->returnValue( new \Twig\TemplateWrapper( $this->mock, $view ) ) );
+		$this->mock->expects( $this->once() )->method( 'loadTemplate' )
+			->will( $this->returnValue( $view) );
 
 
 		$result = $this->object->render( $v, __FILE__, array( 'key' => 'value' ) );
