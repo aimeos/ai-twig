@@ -1,3 +1,0 @@
-src_dir: ext/ai-twig
-json_path: ext/ai-twig/coveralls.json
-coverage_clover: ext/ai-twig/lib/custom/tests/coverage.xml
