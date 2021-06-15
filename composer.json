@@ -15,7 +15,6 @@
 	"require": {
 		"php": "~7.1||~8.0",
 		"twig/twig": "~1.9||~2.0",
-		"composer/installers": "^1.0",
 		"aimeos/aimeos-core": "dev-master"
 	},
 	"require-dev": {
