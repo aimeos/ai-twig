@@ -31,11 +31,11 @@ jobs:
       - run: cd .. && mv project aimeos-core/ext/ai-twig && mv aimeos-core project && cd project
       - restore_cache:
           keys:
-            - php81-{{ checksum "composer.json" }}
+            - php82-{{ checksum "composer.json" }}
       - run: composer req --no-update twig/twig:~3.5
       - run: composer update -n --prefer-dist
       - save_cache:
-          key: php81-{{ checksum "composer.json" }}
+          key: php82-{{ checksum "composer.json" }}
           paths: [./vendor]
       - run: ./vendor/bin/phing -Ddir=ext/ai-twig testext
 
