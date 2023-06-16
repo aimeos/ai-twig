@@ -1,11 +1,11 @@
 <?php
 
-
 /**
- * @copyright Metaways Infosystems GmbH, 2011
  * @license LGPLv3, http://opensource.org/licenses/LGPL-3.0
- * @copyright Aimeos (aimeos.org), 2015-2021
+ * @copyright Aimeos (aimeos.org), 2015-2023
  */
+
+
 class TestHelper
 {
 	private static $aimeos;
@@ -32,15 +32,14 @@ class TestHelper
 	}
 
 
-	private static function getAimeos()
+	public static function getAimeos()
 	{
 		if( !isset( self::$aimeos ) )
 		{
 			require_once 'Bootstrap.php';
 			spl_autoload_register( 'Aimeos\\Bootstrap::autoload' );
 
-			$extdir = dirname( dirname( dirname( __DIR__ ) ) );
-			self::$aimeos = new \Aimeos\Bootstrap( array( $extdir ), false );
+			self::$aimeos = new \Aimeos\Bootstrap();
 		}
 
 		return self::$aimeos;
@@ -49,44 +48,41 @@ class TestHelper
 
 	private static function createContext( $site )
 	{
-		$ctx = new \Aimeos\MShop\Context\Item\Standard();
+		$ctx = new \Aimeos\MShop\Context();
 		$aimeos = self::getAimeos();
 
 
-		$paths = $aimeos->getConfigPaths( 'mysql' );
+		$paths = $aimeos->getConfigPaths();
 		$paths[] = __DIR__ . DIRECTORY_SEPARATOR . 'config';
+		$file = __DIR__ . DIRECTORY_SEPARATOR . 'confdoc.ser';
 
-		$conf = new \Aimeos\MW\Config\PHPArray( [], $paths );
+		$conf = new \Aimeos\Base\Config\PHPArray( [], $paths );
+		$conf = new \Aimeos\Base\Config\Decorator\Memory( $conf );
+		$conf = new \Aimeos\Base\Config\Decorator\Documentor( $conf, $file );
 		$ctx->setConfig( $conf );
 
 
-		$dbm = new \Aimeos\MW\DB\Manager\PDO( $conf );
+		$dbm = new \Aimeos\Base\DB\Manager\Standard( $conf->get( 'resource', [] ), 'PDO' );
 		$ctx->setDatabaseManager( $dbm );
 
 
-		$logger = new \Aimeos\MW\Logger\File( $site . '.log', \Aimeos\MW\Logger\Base::DEBUG );
+		$logger = new \Aimeos\Base\Logger\File( $site . '.log', \Aimeos\Base\Logger\Iface::DEBUG );
 		$ctx->setLogger( $logger );
 
 
-		$cache = new \Aimeos\MW\Cache\None();
-		$ctx->setCache( $cache );
-
-
-		$i18n = new \Aimeos\MW\Translation\None( 'de' );
+		$i18n = new \Aimeos\Base\Translation\None( 'de' );
 		$ctx->setI18n( array( 'de' => $i18n ) );
 
 
-		$session = new \Aimeos\MW\Session\None();
+		$session = new \Aimeos\Base\Session\None();
 		$ctx->setSession( $session );
 
 
-		$localeManager = \Aimeos\MShop\Locale\Manager\Factory::create( $ctx );
+		$localeManager = \Aimeos\MShop::create( $ctx, 'locale' );
 		$localeItem = $localeManager->bootstrap( $site, '', '', false );
-
 		$ctx->setLocale( $localeItem );
 
-		$ctx->setEditor( 'ai-twig:lib/custom' );
 
-		return $ctx;
+		return $ctx->setEditor( 'ai-twig' );
 	}
 }

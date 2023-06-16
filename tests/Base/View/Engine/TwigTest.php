@@ -2,10 +2,10 @@
 
 /**
  * @license LGPLv3, http://opensource.org/licenses/LGPL-3.0
- * @copyright Aimeos (aimeos.org), 2017-2021
+ * @copyright Aimeos (aimeos.org), 2017-2023
  */
 
-namespace Aimeos\MW\View\Engine;
+namespace Aimeos\Base\View\Engine;
 
 
 class TwigTest extends \PHPUnit\Framework\TestCase
@@ -16,16 +16,16 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 
 	protected function setUp() : void
 	{
-		if( !class_exists( '\Twig_Environment' ) ) {
-			$this->markTestSkipped( 'Twig_Environment is not available' );
+		if( !class_exists( '\Twig\Environment' ) ) {
+			$this->markTestSkipped( 'Twig\Environment is not available' );
 		}
 
-		$this->mock = $this->getMockBuilder( '\Twig_Environment' )
-			->setMethods( array( 'getExtensions', 'getLoader', 'loadTemplate' ) )
+		$this->mock = $this->getMockBuilder( '\Twig\Environment' )
+			->onlyMethods( array( 'getExtensions', 'getLoader', 'loadTemplate' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->object = new \Aimeos\MW\View\Engine\Twig( $this->mock );
+		$this->object = new \Aimeos\Base\View\Engine\Twig( $this->mock );
 	}
 
 
@@ -37,15 +37,15 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 
 	public function testRender()
 	{
-		$v = new \Aimeos\MW\View\Standard( [] );
+		$v = new \Aimeos\Base\View\Standard( [] );
 
 		$this->mock->expects( $this->any() )->method( 'getExtensions' )
 			->will( $this->returnValue( array( [] ) ) );
 
 
-		$view = $this->getMockBuilder( '\Twig_Template' )
+		$view = $this->getMockBuilder( '\Twig\Template' )
 			->setConstructorArgs( array( $this->mock ) )
-			->setMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
+			->onlyMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
 			->getMockForAbstractClass();
 
 		$view->expects( $this->once() )->method( 'getBlockNames' )
@@ -58,11 +58,11 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 			->will( $this->returnValue( 'test' ) );
 
 
-		$loader = $this->getMockBuilder( '\Twig_LoaderInterface' )
+		$loader = $this->getMockBuilder( '\Twig\Loader\LoaderInterface' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->mock->expects( $this->once() )->method( 'getLoader' )
+		$this->mock->expects( $this->exactly( 2 ) )->method( 'getLoader' )
 			->will( $this->returnValue( $loader ) );
 
 		$this->mock->expects( $this->once() )->method( 'loadTemplate' )
