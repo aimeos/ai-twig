@@ -40,7 +40,7 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 		$v = new \Aimeos\Base\View\Standard( [] );
 
 		$this->mock->expects( $this->any() )->method( 'getExtensions' )
-			->will( $this->returnValue( array( [] ) ) );
+			->willReturn( array( [] ) );
 
 
 		$view = $this->getMockBuilder( '\Twig\Template' )
@@ -49,13 +49,13 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 			->getMockForAbstractClass();
 
 		$view->expects( $this->once() )->method( 'getBlockNames' )
-			->will( $this->returnValue( array( 'testblock' ) ) );
+			->willReturn( array( 'testblock' ) );
 
 		$view->expects( $this->once() )->method( 'renderBlock' )
-			->will( $this->returnValue( 'block content' ) );
+			->willReturn( 'block content' );
 
 		$view->expects( $this->once() )->method( 'render' )
-			->will( $this->returnValue( 'test' ) );
+			->willReturn( 'test' );
 
 
 		$loader = $this->getMockBuilder( '\Twig\Loader\LoaderInterface' )
@@ -63,10 +63,10 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 			->getMockForAbstractClass();
 
 		$this->mock->expects( $this->exactly( 2 ) )->method( 'getLoader' )
-			->will( $this->returnValue( $loader ) );
+			->willReturn( $loader );
 
 		$this->mock->expects( $this->once() )->method( 'loadTemplate' )
-			->will( $this->returnValue( $view ) );
+			->willReturn( $view );
 
 
 		$result = $this->object->render( $v, __FILE__, array( 'key' => 'value' ) );
