@@ -56,6 +56,40 @@ jobs:
           paths: [./vendor]
       - run: ./vendor/bin/phing -Ddir=ext/ai-twig testext
 
+  "php-8.4":
+    docker:
+      - image: aimeos/ci-php:8.4
+    steps:
+      - checkout
+      - run: git clone --depth=50 --branch=master https://github.com/aimeos/aimeos-core ../aimeos-core
+      - run: cd .. && mv project aimeos-core/ext/ai-twig && mv aimeos-core project && cd project
+      - restore_cache:
+          keys:
+            - php84-{{ checksum "composer.json" }}
+      - run: composer req --no-update twig/twig:~3.5
+      - run: composer update -n --prefer-dist
+      - save_cache:
+          key: php84-{{ checksum "composer.json" }}
+          paths: [./vendor]
+      - run: ./vendor/bin/phing -Ddir=ext/ai-twig testext
+
+  "php-8.5":
+    docker:
+      - image: aimeos/ci-php:8.5
+    steps:
+      - checkout
+      - run: git clone --depth=50 --branch=master https://github.com/aimeos/aimeos-core ../aimeos-core
+      - run: cd .. && mv project aimeos-core/ext/ai-twig && mv aimeos-core project && cd project
+      - restore_cache:
+          keys:
+            - php85-{{ checksum "composer.json" }}
+      - run: composer req --no-update twig/twig:~3.5
+      - run: composer update -n --prefer-dist
+      - save_cache:
+          key: php85-{{ checksum "composer.json" }}
+          paths: [./vendor]
+      - run: ./vendor/bin/phing -Ddir=ext/ai-twig testext
+
 workflows:
   version: 2
   unittest:
@@ -63,3 +97,5 @@ workflows:
       - "php-8.1"
       - "php-8.2"
       - "php-8.3"
+      - "php-8.4"
+      - "php-8.5"
