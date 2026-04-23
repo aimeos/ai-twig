@@ -21,9 +21,11 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 		}
 
 		$this->mock = $this->getMockBuilder( '\Twig\Environment' )
-			->onlyMethods( array( 'getExtensions', 'getLoader', 'loadTemplate' ) )
+			->onlyMethods( array( 'getExtensions', 'getLoader', 'loadTemplate', 'useYield' ) )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->mock->method( 'useYield' )->willReturn( false );
 
 		$this->object = new \Aimeos\Base\View\Engine\Twig( $this->mock );
 	}
@@ -43,24 +45,13 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 			->willReturn( array( [] ) );
 
 
-		$view = $this->getMockBuilder( '\Twig\Template' )
-			->setConstructorArgs( array( $this->mock ) )
-			->onlyMethods( array( 'getBlockNames', 'render', 'renderBlock' ) )
-			->getMockForAbstractClass();
-
-		$view->expects( $this->once() )->method( 'getBlockNames' )
-			->willReturn( array( 'testblock' ) );
-
-		$view->expects( $this->once() )->method( 'renderBlock' )
-			->willReturn( 'block content' );
-
-		$view->expects( $this->once() )->method( 'render' )
-			->willReturn( 'test' );
+		$view = new TwigTestTemplate( $this->mock );
+		$view->blockNames = ['testblock'];
+		$view->blockContent = 'block content';
+		$view->renderContent = 'test';
 
 
-		$loader = $this->getMockBuilder( '\Twig\Loader\LoaderInterface' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$loader = $this->createStub( \Twig\Loader\LoaderInterface::class );
 
 		$this->mock->expects( $this->exactly( 2 ) )->method( 'getLoader' )
 			->willReturn( $loader );
@@ -71,5 +62,55 @@ class TwigTest extends \PHPUnit\Framework\TestCase
 
 		$result = $this->object->render( $v, __FILE__, array( 'key' => 'value' ) );
 		$this->assertEquals( 'test', $result );
+	}
+}
+
+
+class TwigTestTemplate extends \Twig\Template
+{
+	public array $blockNames = [];
+	public string $blockContent = '';
+	public string $renderContent = '';
+
+
+	public function getTemplateName() : string
+	{
+		return 'test';
+	}
+
+
+	public function getDebugInfo() : array
+	{
+		return [];
+	}
+
+
+	public function getSourceContext() : \Twig\Source
+	{
+		return new \Twig\Source( '', 'test' );
+	}
+
+
+	public function getBlockNames( array $context, array $blocks = [] ) : array
+	{
+		return $this->blockNames;
+	}
+
+
+	public function renderBlock( $name, array $context, array $blocks = [], $useBlocks = true ) : string
+	{
+		return $this->blockContent;
+	}
+
+
+	public function render( array $context ) : string
+	{
+		return $this->renderContent;
+	}
+
+
+	protected function doDisplay( array $context, array $blocks = [] ) : iterable
+	{
+		return [];
 	}
 }
