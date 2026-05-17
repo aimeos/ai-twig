@@ -19,7 +19,7 @@ namespace Aimeos\Base\View\Engine;
  */
 class Twig implements Iface
 {
-	private $env;
+	private \Twig\Environment $env;
 
 
 	/**
